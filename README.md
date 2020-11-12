@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# Parley
+This project is a React chat application with a firebase document store and is deployed on heroku. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[https://parley-live.herokuapp.com/](https://parley-live.herokuapp.com/).
 
 ## Available Scripts
 
