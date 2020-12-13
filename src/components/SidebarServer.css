@@ -1,0 +1,41 @@
+.sidebar__serverList {
+    display: flex;
+    flex-direction: column;
+    width: 70px;
+    background: #101314;
+    color: gray;
+}
+.sidebar__server,
+.sidebar__addServer {
+    display: grid;
+    cursor: pointer;
+    background-color: #2f3135;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #2f3135;
+    border-radius: 5em;
+    margin: 10px;
+    align-self: center;
+}
+.sidebar__addServer {
+    padding: 12px;
+}
+.sidebar__server:hover {
+    color: gray;
+    background-color: #fff;
+}
+.sidebar__addServer:hover {
+    color: white;
+    background-color: #40464b;
+}
+.sidebar__serverImg {
+    display: grid;
+    cursor: pointer;
+    background-color: #2f3135;
+    border-radius: 5em;
+    width: 50px;
+    height: 50px;
+}
+.sidebar__server:hover .sidebar__serverImg {
+    opacity: 0.9;
+}
