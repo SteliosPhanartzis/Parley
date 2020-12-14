@@ -38,7 +38,25 @@
 }
 
 .chat__messages {
+    overflow-y: scroll;
+    overflow-x: hidden;
     flex: 1;
+    padding-bottom: 5em;
+}
+
+.chat__messages::-webkit-scrollbar-track {
+	background-color: #363a3f;
+}
+
+.chat__messages::-webkit-scrollbar {
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+.chat__messages::-webkit-scrollbar-thumb {
+	background-color: #181a1b;;
+    border: 2px solid #181a1b;;
+    border-radius: 1em;
 }
 
 .chat__inputIcons > .MuiSvgIcon-root {

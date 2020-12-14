@@ -10,6 +10,14 @@ function SidebarServer() {
     const user = useSelector(selectUser);
     const [servers, setServers] = useState([]);
     const dispatch = useDispatch();
+    const updateSidebar = (serverName) => {
+        dispatch(
+            setServerInfo({
+                serverId: 1, //id,
+                serverName: serverName,//channelName,
+            })
+        )
+    };
     useEffect(() => {
         db.collection('servers')
         .orderBy("serverName", "asc")
@@ -39,18 +47,21 @@ function SidebarServer() {
 
     return (
         <div className="sidebar__serverList">
-            <div className="sidebar__server"
-                onClick={ () => {
-                    dispatch(
-                        setServerInfo({
-                            serverId: 1, //id,
-                            serverName: "Hello world",//channelName,
-                        })
-                    )
-                }
-                }><img src="https://www.shareicon.net/data/256x256/2016/01/03/230309_kronk_256x256.png" className="sidebar__serverImg"/></div>
-            <div className="sidebar__server"><img src="https://img.fireden.net/sci/image/1549/15/1549150062827.png" className="sidebar__serverImg"/></div>
-            <div className="sidebar__server"><img src="https://cdn.theorg.com/00ee9efe-9828-47c3-ba2f-61a4b504b8f4_thumb.jpg" className="sidebar__serverImg"/></div>
+            {
+                servers.map((server) => (
+                    <div className="sidebar__server" 
+                        onClick={ () => {
+                            dispatch(
+                                setServerInfo({
+                                    serverId: server.server.id, //id,
+                                    serverName: server.server.serverName,//channelName,
+                                })
+                            )
+                        }}>
+                        <img id={server.server.serverName} src={(server.server.photo)?server.server.photo:console.log()} className="sidebar__serverImg" />		
+                    </div>
+                ))
+            }
             <AddIcon onClick={handleAddServer} className="sidebar__addServer" />  
         </div>
     )

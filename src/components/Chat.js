@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Message from './Message'
 import ChatHeader from './ChatHeader'
@@ -13,6 +13,7 @@ import db from '../firebase'
 import firebase from 'firebase'
 
 function Chat() {
+    const dummy = useRef();
     const user = useSelector(selectUser);
     const serverId = useSelector(selectServerId);
     const serverName = useSelector(selectServerName);
@@ -29,19 +30,22 @@ function Chat() {
             .orderBy("timestamp", "asc")	
             .onSnapshot((snapshot) =>	
             setMessages(snapshot.docs.map((doc) => doc.data()))	
-            );	
+            );
+        dummy.current.scrollIntoView({ behavior: 'smooth' });	
         }	
     }, [channelId]);
 
     const sendMessage = (e) => {
         e.preventDefault();
-
-         db.collection("channels").doc(channelId).collection("messages").add({	
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
-            message: input,	
-            user: user,	
-    });	
-    setInput("");	
+        if(input && input.split(" ").join("") != ""){
+            db.collection("channels").doc(channelId).collection("messages").add({	
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
+                message: input,	
+                user: user,	
+            });	
+        }
+        setInput("");	
+        dummy.current.scrollIntoView({ behavior: 'smooth' });
   };
 
     return (
@@ -57,6 +61,7 @@ function Chat() {
                         user={message.user}	
                     />
                 ))}
+                <div ref={dummy}></div>
             </div>
 
             <div className="chat__input">

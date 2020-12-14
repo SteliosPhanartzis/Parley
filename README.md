@@ -1,7 +1,7 @@
 # Parley
 This project is a React chat application with a firebase document store and is deployed on heroku. 
 
-[https://parley-live.herokuapp.com/](https://parley-live.herokuapp.com/).
+[https://discord-clone-75157.web.app/](https://discord-clone-75157.web.app/).
 
 ## Available Scripts
 
@@ -72,3 +72,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ### Thanks goes to
 [Fireship-io](https://github.com/fireship-io)
+[Clever Programmer](https://github.com/CleverProgrammer)
