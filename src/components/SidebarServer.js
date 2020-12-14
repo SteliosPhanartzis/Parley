@@ -10,14 +10,6 @@ function SidebarServer() {
     const user = useSelector(selectUser);
     const [servers, setServers] = useState([]);
     const dispatch = useDispatch();
-    const updateSidebar = (serverName) => {
-        dispatch(
-            setServerInfo({
-                serverId: 1, //id,
-                serverName: serverName,//channelName,
-            })
-        )
-    };
     useEffect(() => {
         db.collection('servers')
         .orderBy("serverName", "asc")
@@ -53,8 +45,8 @@ function SidebarServer() {
                         onClick={ () => {
                             dispatch(
                                 setServerInfo({
-                                    serverId: server.server.id, //id,
-                                    serverName: server.server.serverName,//channelName,
+                                    serverId: server.server.id,
+                                    serverName: server.server.serverName,
                                 })
                             )
                         }}>
