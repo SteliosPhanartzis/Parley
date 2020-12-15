@@ -18,19 +18,19 @@ function SidebarServer({serverId, serverName, photo}) {
                         serverName: serverName,
                     })
                 )
-                db.collection('servers/mjL3rTZ0UhSzXVLEh2B5/channels')
-                // .get()
-                // .doc("mjL3rTZ0UhSzXVLEh2B5")
-                // .collection('channels')
-                .orderBy("channelName", "asc")
-                .onSnapshot(snapshot => (
-                    // console.log(snapshot)
-                    setChannels(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        channel: doc.data(),
-                    })))
-                ))
-                console.log(channels);
+                // db.collection('servers/mjL3rTZ0UhSzXVLEh2B5/channels')
+                // // .get()
+                // // .doc("mjL3rTZ0UhSzXVLEh2B5")
+                // // .collection('channels')
+                // .orderBy("channelName", "asc")
+                // .onSnapshot(snapshot => (
+                //     // console.log(snapshot)
+                //     setChannels(snapshot.docs.map(doc => ({
+                //         id: doc.id,
+                //         channel: doc.data(),
+                //     })))
+                // ))
+                // console.log(channels);
             }}
             >
             <img id={serverName} src={(photo)?photo:""} className="sidebar__serverImg" />		
