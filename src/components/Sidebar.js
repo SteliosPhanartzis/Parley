@@ -19,19 +19,51 @@ import { selectServerId, selectServerName } from '../features/appSlice';
 function Sidebar() {
     const user = useSelector(selectUser);
     const [channels, setChannels] = useState([]);
+    const [servers, setServers] = useState([]);
     const serverId = useSelector(selectServerId);
     const serverName = useSelector(selectServerName);
     
     useEffect(() => {
-        db.collection('channels')
-        .orderBy("channelName", "asc")
+        db.collection('servers')
+        .orderBy("serverName", "asc")
         .onSnapshot(snapshot => (
-            setChannels(snapshot.docs.map(doc => ({
+            setServers(snapshot.docs.map(doc => ({
                 id: doc.id,
-                channel: doc.data(),
+                server: doc.data(),
             })))
-        ))
+        ));
+        db.collectionGroup('channels')
+            .orderBy("channelName", "asc")
+            .onSnapshot(snapshot => (
+                setChannels(snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    channel: doc.data(),
+                })))
+            ));
     }, []);
+
+    // useEffect(() => {
+    //     console.log(serverId);
+    //     db.collection('servers/' + serverId + '/channels')
+    //         .orderBy("channelName", "asc")
+    //         .onSnapshot(snapshot => (
+    //             setChannels(snapshot.docs.map(doc => ({
+    //                 id: doc.id,
+    //                 channel: doc.data(),
+    //             })))
+    //         ))
+    // }, []);
+
+    // useEffect(() => {
+    //     db.collection('channels')
+    //     .orderBy("channelName", "asc")
+    //     .onSnapshot(snapshot => (
+    //         setChannels(snapshot.docs.map(doc => ({
+    //             id: doc.id,
+    //             channel: doc.data(),
+    //         })))
+    //     ))
+    // }, []);
 
     const handleAddChannel = () => {
         const channelName = prompt('Enter a new channel')
@@ -43,9 +75,32 @@ function Sidebar() {
         }
     }
 
+    const handleAddServer = () => {
+        const serverName = prompt('Enter a new server')
+
+        if(serverName) {
+            const serverPhoto = prompt('Enter photo URL')
+            if(serverPhoto){
+                db.collection("servers").add({
+                serverName: serverName,
+                photo: serverPhoto,
+                administrators: [{displayName: user.displayName, uid: user.uid}],
+                moderators: []
+             })
+            }
+        }
+    }
+
     return (
         <>
-        <SidebarServer />
+        <div className="sidebar__serverList">
+            {
+                servers.map((server) => (
+                    <SidebarServer serverId = {server.server.id} serverName = {server.server.serverName} photo = {server.server.photo}/>
+                ))
+            }
+            <AddIcon onClick={handleAddServer} className="sidebar__addServer" />  
+        </div>
         <div className="sidebar">
             <div className="sidebar__top">
                 <h3>{serverName}</h3>
