@@ -22,17 +22,25 @@
     overflow-x: hidden;
 }
 .sidebar__channels::-webkit-scrollbar-track {
-	background-color: #2f3135;
+    background-color: #2f3235;
+}
+
+.sidebar__serverList::-webkit-scrollbar-track{
+	background-color: #101314;
 }
 
 .sidebar__channels::-webkit-scrollbar {
 	width: 8px;
 	background-color: #F5F5F5;
 }
+.sidebar__serverList::-webkit-scrollbar {
+    width: 5px;
+    background-color: #F5F5F5;
+}
 
-.sidebar__channels::-webkit-scrollbar-thumb {
-	background-color: #181a1b;;
-    border: 2px solid #181a1b;;
+.sidebar__channels::-webkit-scrollbar-thumb, .sidebar__serverList::-webkit-scrollbar-thumb {
+	background-color: #1f2125;
+    border: 2px solid #1f2125;
     border-radius: 1em;
 }
 
@@ -106,9 +114,12 @@
 .sidebar__serverList {
     display: flex;
     flex-direction: column;
-    width: 70px;
+    width: 80px;
+    height: 100vh;
     background: #101314;
     color: gray;
+    overflow:scroll;
+    overflow-x:hidden;
 }
 
 .sidebar__addServer {
