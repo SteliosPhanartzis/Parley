@@ -22,7 +22,7 @@ function Sidebar() {
     const [servers, setServers] = useState([]);
     const serverId = useSelector(selectServerId);
     const serverName = useSelector(selectServerName);
-    
+
     useEffect(() => {
         db.collection('servers')
         .orderBy("serverName", "asc")
@@ -32,38 +32,7 @@ function Sidebar() {
                 server: doc.data(),
             })))
         ));
-        db.collectionGroup('channels')
-            .orderBy("channelName", "asc")
-            .onSnapshot(snapshot => (
-                setChannels(snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    channel: doc.data(),
-                })))
-            ));
     }, []);
-
-    // useEffect(() => {
-    //     console.log(serverId);
-    //     db.collection('servers/' + serverId + '/channels')
-    //         .orderBy("channelName", "asc")
-    //         .onSnapshot(snapshot => (
-    //             setChannels(snapshot.docs.map(doc => ({
-    //                 id: doc.id,
-    //                 channel: doc.data(),
-    //             })))
-    //         ))
-    // }, []);
-
-    // useEffect(() => {
-    //     db.collection('channels')
-    //     .orderBy("channelName", "asc")
-    //     .onSnapshot(snapshot => (
-    //         setChannels(snapshot.docs.map(doc => ({
-    //             id: doc.id,
-    //             channel: doc.data(),
-    //         })))
-    //     ))
-    // }, []);
 
     const handleAddChannel = () => {
         const channelName = prompt('Enter a new channel')
@@ -96,7 +65,7 @@ function Sidebar() {
         <div className="sidebar__serverList">
             {
                 servers.map((server) => (
-                    <SidebarServer serverId = {server.server.id} serverName = {server.server.serverName} photo = {server.server.photo}/>
+                    <SidebarServer serverId = {server.id} serverName = {server.server.serverName} photo = {server.server.photo} channels = {channels} setChannels = {setChannels} />
                 ))
             }
             <AddIcon onClick={handleAddServer} className="sidebar__addServer" />  

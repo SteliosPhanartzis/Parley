@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './SidebarServer.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../features/userSlice';
 import { setServerInfo } from '../features/appSlice';
 import db from '../firebase';
-function SidebarServer({serverId, serverName, photo}) {
+function SidebarServer({serverId, serverName, photo, channels, setChannels}) {
     const user = useSelector(selectUser);
-    const [channels, setChannels] = useState([]);
     const dispatch = useDispatch();
 
     return (
@@ -18,22 +17,18 @@ function SidebarServer({serverId, serverName, photo}) {
                         serverName: serverName,
                     })
                 )
-                // db.collection('servers/mjL3rTZ0UhSzXVLEh2B5/channels')
-                // // .get()
-                // // .doc("mjL3rTZ0UhSzXVLEh2B5")
-                // // .collection('channels')
-                // .orderBy("channelName", "asc")
-                // .onSnapshot(snapshot => (
-                //     // console.log(snapshot)
-                //     setChannels(snapshot.docs.map(doc => ({
-                //         id: doc.id,
-                //         channel: doc.data(),
-                //     })))
-                // ))
-                // console.log(channels);
+                db.collection('servers/' + serverId + '/channels')
+                    .orderBy("channelName", "asc")
+                    .onSnapshot(snapshot => (
+                        setChannels(snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            channel: doc.data(),
+                        })))
+                    ))
+                    console.log(channels);
             }}
             >
-            <img id={serverName} src={(photo)?photo:""} className="sidebar__serverImg" />		
+            <img id={serverId} name={serverName} src={(photo)?photo:""} className="sidebar__serverImg" />		
         </div>
     )
 }
