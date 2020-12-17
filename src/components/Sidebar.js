@@ -36,9 +36,8 @@ function Sidebar() {
 
     const handleAddChannel = () => {
         const channelName = prompt('Enter a new channel')
-
-        if(channelName) {
-            db.collection("channels").add({
+        if(serverId && channelName) {
+            db.collection("servers/" + serverId + "/channels").add({
                 channelName: channelName,
             })
         }
@@ -65,7 +64,13 @@ function Sidebar() {
         <div className="sidebar__serverList">
             {
                 servers.map((server) => (
-                    <SidebarServer serverId = {server.id} serverName = {server.server.serverName} photo = {server.server.photo} channels = {channels} setChannels = {setChannels} />
+                    <SidebarServer 
+                        serverId = {server.id} 
+                        serverName = {server.server.serverName} 
+                        photo = {server.server.photo} 
+                        channels = {channels} 
+                        setChannels = {setChannels} 
+                    />
                 ))
             }
             <AddIcon onClick={handleAddServer} className="sidebar__addServer" />  

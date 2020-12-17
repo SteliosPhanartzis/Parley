@@ -24,14 +24,14 @@ function Chat() {
 
     useEffect(() => {	
         if (channelId) {	
-        db.collection("channels")	
-            .doc(channelId)	
-            .collection("messages")	
-            .orderBy("timestamp", "asc")	
-            .onSnapshot((snapshot) =>	
-            setMessages(snapshot.docs.map((doc) => doc.data()))	
-            );
-        dummy.current.scrollIntoView({ behavior: 'smooth' });	
+            db.collection("channels")	
+                .doc(channelId)	
+                .collection("messages")	
+                .orderBy("timestamp", "asc")	
+                .onSnapshot((snapshot) =>	
+                setMessages(snapshot.docs.map((doc) => doc.data()))	
+                );
+            dummy.current.scrollIntoView({ behavior: 'smooth' });	
         }	
     }, [channelId]);
 
