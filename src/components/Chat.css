@@ -62,3 +62,7 @@
 .chat__inputIcons > .MuiSvgIcon-root {
     padding: 5px;
 }
+
+#att_file {
+    display: none;
+}

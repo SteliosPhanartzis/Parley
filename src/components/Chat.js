@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Message from './Message'
 import ChatHeader from './ChatHeader'
@@ -16,15 +16,15 @@ function Chat() {
     const dummy = useRef();
     const user = useSelector(selectUser);
     const serverId = useSelector(selectServerId);
-    const serverName = useSelector(selectServerName);
     const channelId = useSelector(selectChannelId);
     const channelName = useSelector(selectChannelName);
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState([]);
-
+    const [file, setFile] = useState(null);
+    const [placeholder, setPlaceholder] = useState("#Message " + channelName);
     useEffect(() => {	
         if (channelId) {	
-            db.collection("channels")	
+            db.collection("servers/" + serverId + "/channels")	
                 .doc(channelId)	
                 .collection("messages")	
                 .orderBy("timestamp", "asc")	
@@ -37,16 +37,27 @@ function Chat() {
 
     const sendMessage = (e) => {
         e.preventDefault();
-        if(input && input.split(" ").join("") != ""){
-            db.collection("channels").doc(channelId).collection("messages").add({	
+        // Handle file attachment here
+        if(file){
+            db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
+                message: file,	
+                user: user,	
+            });	
+        }
+        // Otherwise, just send text
+        else if(input && input.split(" ").join("") != ""){
+            db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
                 message: input,	
                 user: user,	
             });	
         }
-        setInput("");	
+        setInput("");
+        setFile(null);
+        setPlaceholder("#Message " + channelName);	
         dummy.current.scrollIntoView({ behavior: 'smooth' });
-  };
+    };
 
     return (
         <div className="chat">
@@ -65,13 +76,27 @@ function Chat() {
             </div>
 
             <div className="chat__input">
-                <AddCircleIcon fontSize="large" />
+                <input type="file" 
+                        id="att_file"
+                        name="att_file" 
+                        accept="image/x-png,image/gif,image/jpeg"
+                        files={file} onChange={e => {
+                            setFile(e.target.files[0])
+                            setPlaceholder(e.target.files[0].name)
+                        }} />
+                {
+                    React.createElement(
+                        'label',
+                        {htmlFor: 'att_file'},
+                        <AddCircleIcon fontSize="large" />
+                    )
+                }
                 <form>
                     <input 
                         value={ input }
                         disabled={ !channelId } 
                         onChange={ (e) => setInput(e.target.value) }
-                        placeholder={`Message #${channelName}`} 
+                        placeholder={placeholder} 
                     />
                     <button 
                         disabled={ !channelId } 
