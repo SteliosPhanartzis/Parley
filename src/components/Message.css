@@ -1,3 +1,7 @@
+a {
+    font-weight: bold;
+    color: #16a8d1;
+}
 .message {
     display: flex;
     align-items: center;
@@ -24,3 +28,4 @@
 .message__attachment {
     padding-top: 0.75em;
 }
+

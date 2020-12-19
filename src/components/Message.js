@@ -1,5 +1,6 @@
 import { Avatar } from '@material-ui/core'
 import React from 'react'
+import Linkify from 'react-linkify';
 import "./Message.css"
 
 function Message({ timestamp, message, user, file, fileType }) {
@@ -33,7 +34,7 @@ function Message({ timestamp, message, user, file, fileType }) {
                     </span>
                 </h4>
 
-                <p>{ message }</p>
+                <p><Linkify>{ message }</Linkify></p>
                 {verifyFile()}
             </div>
         </div>
