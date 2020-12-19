@@ -4,6 +4,7 @@ import Message from './Message'
 import ChatHeader from './ChatHeader'
 import { selectUser } from '../features/userSlice'
 import { selectChannelId, selectChannelName, selectServerId, selectServerName } from '../features/appSlice'
+import Picker from 'emoji-picker-react';
 import './Chat.css'
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard'
 import GifIcon from '@material-ui/icons/Gif'
@@ -22,6 +23,16 @@ function Chat() {
     const [messages, setMessages] = useState([]);
     const [file, setFile] = useState(null);
     const [placeholder, setPlaceholder] = useState("#Message " + channelName);
+    const [emojiDisplay, setEmojiDisplay] = useState("none");
+
+    function toggleEmojiPicker() {
+        if(emojiDisplay == "none")
+            setEmojiDisplay("flex");
+        else
+            setEmojiDisplay("none");
+
+    }
+
     useEffect(() => {	
         if (channelId) {	
             db.collection("servers/" + serverId + "/channels")	
@@ -38,15 +49,15 @@ function Chat() {
     const sendMessage = (e) => {
         e.preventDefault();
         // Handle file attachment here
-        if(file){
-            db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
-                message: file,	
-                user: user,	
-            });	
-        }
+        // if(file){
+        //     db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
+        //         timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
+        //         message: file,	
+        //         user: user,	
+        //     });	
+        // }
         // Otherwise, just send text
-        else if(input && input.split(" ").join("") != ""){
+        if(input && input.split(" ").join("") != ""){
             db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
                 message: input,	
@@ -73,6 +84,9 @@ function Chat() {
                     />
                 ))}
                 <div ref={dummy}></div>
+            </div>
+            <div id="emoji_picker" style={{display: emojiDisplay}}>
+                <Picker onEmojiClick={(event, emojiObject) => { setInput(input + emojiObject.emoji)}} />
             </div>
 
             <div className="chat__input">
@@ -111,7 +125,7 @@ function Chat() {
                 <div className="chat__inputIcons">
                     <CardGiftcardIcon fontSize="large" />
                     <GifIcon fontSize="large" />
-                    <EmojiEmotionsIcon fontSize="large" />
+                    <EmojiEmotionsIcon onClick={toggleEmojiPicker} fontSize="large" />
                 </div>
             </div>
         </div>
