@@ -22,15 +22,15 @@ function Chat() {
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState([]);
     const [file, setFile] = useState(null);
-    const [placeholder, setPlaceholder] = useState("#Message " + channelName);
+    const [placeholder, setPlaceholder] = useState(null);
     const [emojiDisplay, setEmojiDisplay] = useState("none");
+    
+    var storageRef = firebase.storage().ref();
 
     function toggleEmojiPicker() {
-        if(emojiDisplay == "none")
-            setEmojiDisplay("flex");
-        else
+        (channelId && emojiDisplay == "none")?
+            setEmojiDisplay("flex"):
             setEmojiDisplay("none");
-
     }
 
     useEffect(() => {	
@@ -45,28 +45,57 @@ function Chat() {
             dummy.current.scrollIntoView({ behavior: 'smooth' });	
         }	
     }, [channelId]);
-
     const sendMessage = (e) => {
         e.preventDefault();
+        let fileRef = null;
+        let fileURL = null;
         // Handle file attachment here
-        // if(file){
-        //     db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
-        //         timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
-        //         message: file,	
-        //         user: user,	
-        //     });	
-        // }
+        if(file){
+            storageRef.child(user.displayName + "-" + file.name).getDownloadURL().then(onResolve, onReject);
+            function onReject() {
+                fileRef = storageRef.child(user.displayName + "-" + file.name);
+                fileRef.put(file)
+                .then(async() => {
+                    fileURL = await fileRef.getDownloadURL();
+                    console.log("File has been uploaded");
+                })
+                .then(async () => {
+                    await db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
+                        message: input,	
+                        user: user,	
+                        file: fileURL,
+                        fileType: file.type
+                    })	
+                })
+                .then(() => {
+                    setFile(null);
+                })
+            }
+
+            async function onResolve(foundURL) {
+                db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
+                    message: input,	
+                    user: user,	
+                    file: await foundURL,
+                    fileType: file.type
+                })	
+                setFile(null);
+            }
+        }
         // Otherwise, just send text
-        if(input && input.split(" ").join("") != ""){
+        else if(!file && input && input.split(" ").join("") != ""){
             db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
                 message: input,	
                 user: user,	
+                file: null
             });	
+            setFile(null);
         }
         setInput("");
-        setFile(null);
-        setPlaceholder("#Message " + channelName);	
+        setPlaceholder(null);
         dummy.current.scrollIntoView({ behavior: 'smooth' });
     };
 
@@ -81,6 +110,8 @@ function Chat() {
                         timestamp={message.timestamp}	
                         message={message.message}	
                         user={message.user}	
+                        file={message.file}
+                        fileType={message.fileType}
                     />
                 ))}
                 <div ref={dummy}></div>
@@ -94,7 +125,9 @@ function Chat() {
                         id="att_file"
                         name="att_file" 
                         accept="image/x-png,image/gif,image/jpeg"
-                        files={file} onChange={e => {
+                        disabled = { !channelId } 
+                        files={file} 
+                        onChange={e => {
                             setFile(e.target.files[0])
                             setPlaceholder(e.target.files[0].name)
                         }} />
@@ -110,7 +143,7 @@ function Chat() {
                         value={ input }
                         disabled={ !channelId } 
                         onChange={ (e) => setInput(e.target.value) }
-                        placeholder={placeholder} 
+                        placeholder={(placeholder)? placeholder: "#Message " + channelName} 
                     />
                     <button 
                         disabled={ !channelId } 

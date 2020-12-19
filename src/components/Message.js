@@ -2,10 +2,29 @@ import { Avatar } from '@material-ui/core'
 import React from 'react'
 import "./Message.css"
 
-function Message({ timestamp, message, user }) {
+function Message({ timestamp, message, user, file, fileType }) {
+    function verifyFile() {
+        let el = null;
+        if(file){
+            switch(fileType){
+                case("image/bmp"):
+                case("image/gif"):
+                case("image/jpeg"):
+                case("image/png"):
+                    el = <img src={file} className="attached__image message__attachment" />
+                    break;
+                case("audio/mpeg"):
+                    el = <audio className="message__attachment" controls><source src={file}/>Audio tag unsupported</audio>
+                    break;
+                default:
+                    break;
+            }
+        }
+        return el;
+    }
     return (
         <div className="message">
-            <Avatar src={user.photo}/>
+            <Avatar className="message__avatar" src={user.photo}/>
             <div className="message__info">
                 <h4>
                     { user.displayName }
@@ -15,6 +34,7 @@ function Message({ timestamp, message, user }) {
                 </h4>
 
                 <p>{ message }</p>
+                {verifyFile()}
             </div>
         </div>
     )

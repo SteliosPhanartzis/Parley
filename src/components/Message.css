@@ -14,3 +14,13 @@
     margin-left: 20px;
     font-size: x-small;
 }
+.attached__image {
+    width: 20vw;
+    height: auto;
+}
+.message__avatar {
+    align-self: flex-start;
+}
+.message__attachment {
+    padding-top: 0.75em;
+}
