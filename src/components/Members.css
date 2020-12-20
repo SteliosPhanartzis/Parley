@@ -1,0 +1,14 @@
+.members {
+    display: flex;
+    flex: 0.15;
+    flex-direction: column;
+    background-color: #2f3235;
+}
+.members__list {
+    padding: 10px;
+}
+.members__list > p {
+    color: gray;
+    font-size: smaller;
+    justify-content: flex-start;
+}

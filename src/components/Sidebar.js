@@ -77,7 +77,7 @@ function Sidebar() {
         </div>
         <div className="sidebar">
             <div className="sidebar__top">
-                <h3>{serverName}</h3>
+                <h4>{serverName}</h4>
                 <ExpandMoreIcon />
             </div>
             <div className="sidebar__channels">
@@ -98,7 +98,7 @@ function Sidebar() {
             <div className="sidebar__voice">
                 <SignalCellularAltRounded 
                     className="sidebar__voiceIcon"
-                    fontSize="large"
+                    fontSize="initial"
                 />
                 <div className="sidebar__voiceInfo">
                     <h3>Voice Connected</h3>
@@ -110,7 +110,7 @@ function Sidebar() {
                 </div>
             </div>
             <div className="sidebar__profile">
-                <Avatar onClick={() => auth.signOut()}src={user.photo}/>
+                <Avatar id="sidebar__avatar" onClick={() => auth.signOut()}src={user.photo}/>
                 <div className="sidebar__profileInfo">
                     <h3>
                         {user.displayName}

@@ -2,10 +2,10 @@
     display: grid;
     cursor: pointer;
     background-color: #2f3135;
-    height: 50px;
+    height: 45px;
     border: 2px solid #2f3135;
     border-radius: 5em;
-    margin: 10px;
+    margin: 5px;
     align-self: center;
 }
 
@@ -19,8 +19,8 @@
     cursor: pointer;
     background-color: #2f3135;
     border-radius: 5em;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
 }
 
 .sidebar__server:hover .sidebar__serverImg {

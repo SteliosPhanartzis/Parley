@@ -21,7 +21,7 @@ function Chat() {
     const channelName = useSelector(selectChannelName);
     const [input, setInput] = useState(() => {return ""});
     const [messages, setMessages] = useState(() => {return []});
-    const [file, setFile] = useState(() => {return null});
+    const [file, setFile] = useState(null);
     const [placeholder, setPlaceholder] = useState(() => {return null});
     const [emojiDisplay, setEmojiDisplay] = useState(() => {return "none"});
     const fileSizeCap = 2097152; //Should also verify limit on backend
@@ -133,10 +133,15 @@ function Chat() {
                         name="att_file" 
                         accept="image/x-png,image/gif,image/jpeg,image/bmp,audio/mpeg"
                         disabled = { !channelId } 
-                        files={file} 
+                        files={ file }
+                        value={() => {return (file)? file.name :"" }} 
                         onChange={e => {
-                            setFile(e.target.files[0])
-                            setPlaceholder(e.target.files[0].name)
+                            if (e.target.files[0]){
+                                setFile(e.target.files[0])
+                                setPlaceholder(e.target.files[0].name)
+                            } else {
+                                console.log("File action cancelled")
+                            }
                         }} />
                 {
                     React.createElement(
