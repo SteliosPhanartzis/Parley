@@ -19,12 +19,12 @@ function Chat() {
     const serverId = useSelector(selectServerId);
     const channelId = useSelector(selectChannelId);
     const channelName = useSelector(selectChannelName);
-    const [input, setInput] = useState("");
-    const [messages, setMessages] = useState([]);
-    const [file, setFile] = useState(null);
-    const [placeholder, setPlaceholder] = useState(null);
-    const [emojiDisplay, setEmojiDisplay] = useState("none");
-    
+    const [input, setInput] = useState(() => {return ""});
+    const [messages, setMessages] = useState(() => {return []});
+    const [file, setFile] = useState(() => {return null});
+    const [placeholder, setPlaceholder] = useState(() => {return null});
+    const [emojiDisplay, setEmojiDisplay] = useState(() => {return "none"});
+    const fileSizeCap = 2097152; //Should also verify limit on backend
     var storageRef = firebase.storage().ref();
 
     function toggleEmojiPicker() {
@@ -51,26 +51,33 @@ function Chat() {
         let fileURL = null;
         // Handle file attachment here
         if(file){
-            storageRef.child(user.displayName + "-" + file.name).getDownloadURL().then(onResolve, onReject);
-            function onReject() {
-                fileRef = storageRef.child(user.displayName + "-" + file.name);
-                fileRef.put(file)
-                .then(async() => {
-                    fileURL = await fileRef.getDownloadURL();
-                    console.log("File has been uploaded");
-                })
-                .then(async () => {
-                    await db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
-                        message: input,	
-                        user: user,	
-                        file: fileURL,
-                        fileType: file.type
-                    })	
-                })
-                .then(() => {
-                    setFile(null);
-                })
+            if(file.size > fileSizeCap){
+                alert("File is over 2MB limit!");
+                setFile(null);
+            }
+            else {
+                storageRef.child(user.displayName + "-" + file.name).getDownloadURL().then(onResolve, onReject);
+                function onReject() {
+                    fileRef = storageRef.child(user.displayName + "-" + file.name);
+                    console.log(file.size);
+                    fileRef.put(file)
+                    .then(async() => {
+                        fileURL = await fileRef.getDownloadURL();
+                        console.log("File has been uploaded");
+                    })
+                    .then(async () => {
+                        await db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
+                            message: input,	
+                            user: user,	
+                            file: fileURL,
+                            fileType: file.type
+                        })	
+                    })
+                    .then(() => {
+                        setFile(null);
+                    })
+                }
             }
 
             async function onResolve(foundURL) {
@@ -124,7 +131,7 @@ function Chat() {
                 <input type="file" 
                         id="att_file"
                         name="att_file" 
-                        accept="image/x-png,image/gif,image/jpeg"
+                        accept="image/x-png,image/gif,image/jpeg,image/bmp,audio/mpeg"
                         disabled = { !channelId } 
                         files={file} 
                         onChange={e => {

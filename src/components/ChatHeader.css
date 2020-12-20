@@ -54,3 +54,11 @@
   color: white;
   border: none;
 }
+@media(max-width: 850px){
+  .chatHeader{
+    min-width: 20vw;
+  }
+  .chatHeader__right > .MuiSvgIcon-root {
+    display: none;
+  }
+}

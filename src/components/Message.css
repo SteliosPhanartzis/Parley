@@ -18,9 +18,9 @@ a {
     margin-left: 20px;
     font-size: x-small;
 }
-.attached__image {
-    width: 20vw;
-    height: auto;
+.attached__media {
+    max-width: 25vw;
+    max-height: 50vh;
 }
 .message__avatar {
     align-self: flex-start;
@@ -28,4 +28,10 @@ a {
 .message__attachment {
     padding-top: 0.75em;
 }
-
+audio { 
+    max-height: 40px;
+    max-width: 30vw;
+}
+audio:focus, video:focus {
+    outline: none;
+}

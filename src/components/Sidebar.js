@@ -60,7 +60,7 @@ function Sidebar() {
     }
 
     return (
-        <>
+        <div className="sidebar__panel">
         <div className="sidebar__serverList">
             {
                 servers.map((server) => (
@@ -126,7 +126,7 @@ function Sidebar() {
                 </div>
             </div>
         </div>
-        </>
+        </div>
     )
 }
 

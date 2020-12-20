@@ -1,7 +1,10 @@
+.sidebar__panel{
+    display: flex;
+    height: 100vh;
+}
 .sidebar {
     display: flex;
     flex-direction: column;
-    flex: 0.2;
     height: 100vh;
     background-color: #2f3235;
 }
@@ -139,4 +142,10 @@
 .sidebar__addServer:hover {
     color: white;
     background-color: #40464b;
+}
+@media(max-width:900px){
+    .sidebar__voice, 
+    .sidebar__profile {
+        font-size: 0.8em;
+    }
 }
