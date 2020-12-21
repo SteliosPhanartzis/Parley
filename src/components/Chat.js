@@ -25,7 +25,7 @@ function Chat() {
     const [placeholder, setPlaceholder] = useState(() => {return null});
     const [emojiDisplay, setEmojiDisplay] = useState(() => {return "none"});
     const fileSizeCap = 2097152; //Should also verify limit on backend
-    var storageRef = firebase.storage().ref();
+    const storageRef = firebase.storage().ref();
 
     function toggleEmojiPicker() {
         (channelId && emojiDisplay == "none")?
@@ -35,9 +35,7 @@ function Chat() {
 
     useEffect(() => {	
         if (channelId) {	
-            db.collection("servers/" + serverId + "/channels")	
-                .doc(channelId)	
-                .collection("messages")	
+            db.collection("servers/" + serverId + "/channels/" + channelId + "/messages")	
                 .orderBy("timestamp", "asc")	
                 .onSnapshot((snapshot) =>	
                 setMessages(snapshot.docs.map((doc) => doc.data()))	
@@ -66,7 +64,7 @@ function Chat() {
                         console.log("File has been uploaded");
                     })
                     .then(async () => {
-                        await db.collection("servers/" + serverId + "/channels").doc(channelId).collection("messages").add({	
+                        await db.collection("servers/" + serverId + "/channels/" + channelId + "/messages").add({	
                             timestamp: firebase.firestore.FieldValue.serverTimestamp(),	
                             message: input,	
                             user: user,	

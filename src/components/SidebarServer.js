@@ -9,7 +9,7 @@ function SidebarServer({serverId, serverName, photo, channels, setChannels}) {
     const dispatch = useDispatch();
 
     return (
-        <div className="sidebar__server" 
+        <div key={serverId} className="sidebar__server" 
             onClick={ () => {
                 dispatch(
                     setServerInfo({

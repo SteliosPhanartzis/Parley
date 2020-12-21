@@ -22,6 +22,7 @@ function Sidebar() {
     const [servers, setServers] = useState([]);
     const serverId = useSelector(selectServerId);
     const serverName = useSelector(selectServerName);
+    let userCollection = db.collection("users");
 
     useEffect(() => {
         db.collection('servers')
@@ -110,7 +111,16 @@ function Sidebar() {
                 </div>
             </div>
             <div className="sidebar__profile">
-                <Avatar id="sidebar__avatar" onClick={() => auth.signOut()}src={user.photo}/>
+                <Avatar id="sidebar__avatar" 
+                    onClick={() => {
+                        userCollection.where("uid", "==", user.uid).limit(1).get().then((snapshot) => {
+                            snapshot.forEach((doc) =>{
+                                userCollection.doc(doc.id).update({status: "offline"})
+                            })
+                        })
+                        auth.signOut()
+                    }} 
+                    src={user.photo}/>
                 <div className="sidebar__profileInfo">
                     <h3>
                         {user.displayName}

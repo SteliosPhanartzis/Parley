@@ -5,9 +5,10 @@ import Chat from './components/Chat';
 import { selectUser, login, logout } from './features/userSlice'
 import { useSelector, useDispatch } from 'react-redux';
 import Login from './components/Login';
-import { auth } from './firebase';
+import db, { auth } from './firebase';
 import Modal from './components/Modal'
 import Members from './components/Members';
+import firebase from 'firebase'
 
 function App() {
   const dispatch = useDispatch();
@@ -18,9 +19,28 @@ function App() {
       setModalDisplay("flex")
       :setModalDisplay("none")
   }
+  
   useEffect(() => {
-    auth.onAuthStateChanged((authUser) => {
+    auth.onAuthStateChanged(async (authUser) => {
+      let userCollection = db.collection("users");
       if (authUser) {
+        let docRef = userCollection.where("uid", "==", authUser.uid).limit(1).get();
+        await docRef.then((snapshot) => {
+          console.log(authUser)
+          if(snapshot.docs.length == 0){
+            userCollection.add({
+              uid: authUser.uid,
+              displayName: authUser.displayName,
+              photo: authUser.photoURL,
+              status: "online"
+            })
+          }
+          else
+            snapshot.forEach((doc) =>{
+              userCollection.doc(doc.id).update({status: "online"})
+              return;
+            })
+        })
         dispatch(
           login({
             uid: authUser.uid,
@@ -30,7 +50,9 @@ function App() {
           })
         );
       } else {
-        dispatch(logout());
+          if(user){
+            await dispatch(logout())
+          }
       }
     });
   }, [dispatch]);

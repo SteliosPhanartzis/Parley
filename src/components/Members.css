@@ -12,3 +12,17 @@
     font-size: smaller;
     justify-content: flex-start;
 }
+.active, .inactive {
+    display: flex;
+    margin: 8px;
+    padding: 2px;
+}
+.active p, .inactive p{
+    padding: 8px;
+}
+.active {
+    color: white;
+}
+.inactive {
+    color: gray;
+}

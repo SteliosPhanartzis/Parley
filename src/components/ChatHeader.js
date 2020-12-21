@@ -26,7 +26,7 @@ function ChatHeader({ channelName }) {
                 </div>
 
                 <SendRoundedIcon />
-                <HelpRoundedIcon />
+                <a href="https://github.com/SteliosPhanartzis/Parley"><HelpRoundedIcon /></a>
             </div>
         </div>
     )

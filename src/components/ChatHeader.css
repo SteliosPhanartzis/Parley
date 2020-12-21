@@ -1,3 +1,6 @@
+.chatHeader__left a {
+  text-decoration: none;
+}
 .chatHeader {
   display: flex;
   justify-content: space-between;
@@ -16,7 +19,6 @@
 .chatHeader__left {
   flex: 0.5
 }
-
 .chatHeader__left > h3 {
   display: flex;
   align-items: center;
@@ -31,14 +33,17 @@
   justify-content: space-between;
 }
 
-.chatHeader__right > .MuiSvgIcon-root {
+.chatHeader__right > .MuiSvgIcon-root,
+.chatHeader__right a > .MuiSvgIcon-root {
   padding: 8px;
   cursor: pointer;
   width: 0.8em;
   height: 0.8em;
+  color: gray;
 }
 
-.chatHeader__right > .MuiSvgIcon-root:hover {
+.chatHeader__right > .MuiSvgIcon-root:hover,
+.chatHeader__right a > .MuiSvgIcon-root:hover {
   color: white;
 }
 
