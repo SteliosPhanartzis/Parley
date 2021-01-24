@@ -118,9 +118,10 @@ function Sidebar() {
                                 userCollection.doc(doc.id).update({status: "offline"})
                             })
                         })
-                        // Signout user, then update state to force page refresh
+                        // Signout user, then update state to force page refresh, force window refresh to make sure
                         auth.signOut()
-                        .then(setChannels([...channels, {"id":"dummy", "channel":{}}]));
+                        .then(setChannels([...channels, {"id":"dummy", "channel":{}}]))
+                        .then(window.location.reload());
                     }} 
                     src={user.photo}/>
                 <div className="sidebar__profileInfo">
