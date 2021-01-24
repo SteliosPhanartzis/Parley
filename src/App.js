@@ -51,7 +51,7 @@ function App() {
         );
       } else {
           if(user){
-            await dispatch(logout())
+            await dispatch(logout());
           }
       }
     });
@@ -61,7 +61,7 @@ function App() {
     <div className="app">
       {user? (
         <>
-          <Sidebar />
+          <Sidebar/>
           <Chat />
           <Members />
           <Modal displayState={modalDisplay} displayHook={setModalDisplay} />

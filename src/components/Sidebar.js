@@ -118,7 +118,10 @@ function Sidebar() {
                                 userCollection.doc(doc.id).update({status: "offline"})
                             })
                         })
-                        auth.signOut()
+                        auth.signOut();
+                        // Update state to force refresh
+                        setChannels([...channels]);
+                        setServers([...servers])
                     }} 
                     src={user.photo}/>
                 <div className="sidebar__profileInfo">
