@@ -36,7 +36,7 @@ function App() {
             })
           }
           else
-            snapshot.forEach((doc) =>{
+          snapshot.forEach((doc) => {
               userCollection.doc(doc.id).update({status: "online"})
               return;
             })
@@ -47,6 +47,7 @@ function App() {
             photo: authUser.photoURL,
             email: authUser.email,
             displayName: authUser.displayName,
+            status: "online"
           })
         );
       } else {

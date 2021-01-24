@@ -113,8 +113,9 @@ function Sidebar() {
             <div className="sidebar__profile">
                 <Avatar id="sidebar__avatar" 
                     onClick={() => {
-                        userCollection.where("uid", "==", user.uid).limit(1).get().then((snapshot) => {
-                            snapshot.forEach((doc) =>{
+                        userCollection.where("uid", "==", user.uid).limit(1)
+                        .onSnapshot(snapshot => {
+                            snapshot.docs.forEach(doc => {
                                 userCollection.doc(doc.id).update({status: "offline"})
                             })
                         })
