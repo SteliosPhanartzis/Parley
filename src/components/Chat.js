@@ -148,7 +148,7 @@ function Chat() {
                         <AddCircleIcon fontSize="large" />
                     )
                 }
-                <form>
+                <form onSubmit={sendMessage}>
                     <input 
                         value={ input }
                         disabled={ !channelId } 
@@ -159,7 +159,6 @@ function Chat() {
                         disabled={ !channelId } 
                         className="chat__inputButton" 
                         type="submit"
-                        onClick={sendMessage}
                     >
                         Send Message
                     </button>
